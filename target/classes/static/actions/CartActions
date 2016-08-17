@@ -1,0 +1,22 @@
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var CartConstants = require('../constants/CartConstants');
+
+var CartActions = {
+
+  addToCart: function(product) {
+    AppDispatcher.handleAction({
+      actionType: CartConstants.CART_ADD,
+      product: product
+    })
+  },
+
+  removeFromCart: function(product) {
+    AppDispatcher.handleAction({
+      actionType: CartConstants.CART_REMOVE,
+      product: product
+    })
+  },
+
+};
+
+module.exports = CartActions;

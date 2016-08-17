@@ -1,0 +1,12 @@
+var ProductActions = require('../actions/ProductActions');
+var client = require('../client');
+
+module.exports = {
+
+    getProductData: function () {
+        client({method: 'GET', path: '/api/customers/' + localStorage.customerId + '/catalogue'}).done(response => {
+            ProductActions.addToProducts(response.entity);
+        });
+    }
+
+};

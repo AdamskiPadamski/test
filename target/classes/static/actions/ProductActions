@@ -1,0 +1,15 @@
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var ProductConstants = require('../constants/ProductConstants');
+
+var ProductActions = {
+
+  addToProducts: function(products) {
+    AppDispatcher.handleAction({
+      actionType: ProductConstants.RECEIVE_PRODUCTS,
+      products: products
+    })
+  },
+
+};
+
+module.exports = ProductActions;
