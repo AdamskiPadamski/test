@@ -9,7 +9,7 @@
 	<packaging>jar</packaging>
 
 	<name>product</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Product selection application</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -58,12 +58,6 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.16.10</version>
 		</dependency>
 	</dependencies>
 

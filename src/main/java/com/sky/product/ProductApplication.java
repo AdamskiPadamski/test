@@ -31,6 +31,12 @@ public class ProductApplication {
 		@Autowired
 		ProductRepository productRepository;
 
+		/**
+		 * Populates database
+		 *
+		 * @param strings variable number of arguments
+		 * @throws Exception
+         */
 		@Override
 		public void run(String... strings) throws Exception {
 			Location location = new Location();

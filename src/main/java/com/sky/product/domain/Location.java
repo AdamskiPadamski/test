@@ -1,9 +1,6 @@
 package com.sky.product.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Entity;
@@ -17,9 +14,6 @@ import java.util.List;
  * Created by Adam on 12/08/2016.
  */
 @Entity
-@Data
-@EqualsAndHashCode(of = "name")
-@ToString(exclude = { "customers", "products" })
 public class Location {
 
     @Id
@@ -50,4 +44,59 @@ public class Location {
         products.remove(product);
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<Customer> customers) {
+        this.customers = customers;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Location location = (Location) o;
+
+        return name.equals(location.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

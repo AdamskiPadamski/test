@@ -28,6 +28,7 @@ public class CustomerService {
      *
      * @param customerId the id of the customer whose catalogue is to be retrieved
      * @return list of products in the customer's catalogue
+     * @throws CustomerNotFoundException if customer with specified id is not found
      */
     public List<Product> getCustomerCatalogue(Long customerId) {
         Customer customer = customerRepository.findOne(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
@@ -40,8 +41,9 @@ public class CustomerService {
      *
      * @param customerId the id of the customer whose location is to be retrieved
      * @return the location of the specified customer
+     * @throws CustomerNotFoundException if customer with specified id is not found
      */
-    public Location getCustomerLocation(Long customerId) {
+    public Location getCustomerLocation(Long customerId) throws CustomerNotFoundException {
         Customer customer = customerRepository.findOne(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
 
         return customer.getLocation();

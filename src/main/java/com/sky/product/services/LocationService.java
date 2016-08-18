@@ -27,6 +27,7 @@ public class LocationService {
      *
      * @param locationId the id of the location whose available products are to be retrieved
      * @return the list of available products for the specified location
+     * @throws LocationNotFoundException if customer with specified id is not found
      */
     public List<Product> getProductsForLocation(Long locationId) {
         Location location = locationRepository.findOne(locationId).orElseThrow(() -> new LocationNotFoundException(locationId));
