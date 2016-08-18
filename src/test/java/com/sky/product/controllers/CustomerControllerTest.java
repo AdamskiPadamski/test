@@ -1,5 +1,6 @@
 package com.sky.product.controllers;
 
+import com.sky.product.domain.Location;
 import com.sky.product.domain.Product;
 import com.sky.product.exceptions.CustomerNotFoundException;
 import com.sky.product.services.CustomerService;
@@ -19,8 +20,6 @@ import java.util.ArrayList;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -46,7 +45,7 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testGetCatalogue() throws Exception {
+    public void testSuccessGetCatalogue() throws Exception {
         when(customerService.getCustomerCatalogue(any(Long.class))).thenReturn(new ArrayList<Product>());
 
         mockMvc.perform(get("/api/customers/1/catalogue")
@@ -56,31 +55,32 @@ public class CustomerControllerTest {
     }
 
     @Test
-    public void testGetCartProducts() throws Exception {
-        when(customerService.getProductsInCustomerCart(any(Long.class))).thenReturn(new ArrayList<Product>());
+    public void testFailureGetCatalogue() throws Exception {
+        when(customerService.getCustomerCatalogue(any(Long.class))).thenThrow(new CustomerNotFoundException(1L));
 
-        mockMvc.perform(get("/api/customers/1/cart/products")
+        mockMvc.perform(get("/api/customers/1/catalogue")
+                .contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(status().isNotFound())
+                .andReturn();
+    }
+
+    @Test
+    public void testSuccessGetLocation() throws Exception {
+        when(customerService.getCustomerLocation(any(Long.class))).thenReturn(new Location());
+
+        mockMvc.perform(get("/api/customers/1/location")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
                 .andReturn();
     }
 
     @Test
-    public void testAddProductToCart() throws Exception {
-        String body = "{ \"productId\": 1 }";
+    public void testFailureGetLocation() throws Exception {
+        when(customerService.getCustomerLocation(any(Long.class))).thenThrow(new CustomerNotFoundException(1L));
 
-        mockMvc.perform(post("/api/customers/1/cart/products/")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(body))
-                .andExpect(status().isCreated())
-                .andReturn();
-    }
-
-    @Test
-    public void testDeleteProductFromCart() throws Exception {
-        mockMvc.perform(delete("/api/customers/1/cart/products/1")
+        mockMvc.perform(get("/api/customers/1/location")
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isNoContent())
+                .andExpect(status().isNotFound())
                 .andReturn();
     }
 

@@ -1,5 +1,4 @@
 var React = require('react');
-var CartStore = require('../stores/CartStore');
 var ProductStore = require('../stores/ProductStore');
 var ProductList = require('./ProductList');
 var Cart = require('./Cart');
@@ -7,8 +6,7 @@ var _ = require('underscore');
 
 function getCartState() {
     return {
-        products: ProductStore.getProduct(),
-        cartItems: CartStore.getCartItems(),
+        products: ProductStore.getProducts()
     };
 }
 
@@ -20,12 +18,10 @@ var CartApp = React.createClass({
 
     componentDidMount: function() {
         ProductStore.addChangeListener(this._onChange);
-        CartStore.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function() {
         ProductStore.removeChangeListener(this._onChange);
-        CartStore.removeChangeListener(this._onChange);
     },
 
     render: function() {
@@ -38,7 +34,7 @@ var CartApp = React.createClass({
                 {headings.map(heading => <ProductList key={heading} heading={heading} products={productsByCategory[heading]} />)}
             </div>
             <div style={{'width': '33%', 'float': 'left'}}>
-                <Cart products={this.state.cartItems} />
+                <Cart products={this.state.products.filter(product => product.selected === true)} />
             </div>
           </div>
         );

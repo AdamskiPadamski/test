@@ -16,7 +16,7 @@ import java.util.List;
 @Entity
 @Data
 @EqualsAndHashCode(of = "name")
-@ToString(exclude = { "location", "carts" })
+@ToString(exclude = { "location" })
 public class Product {
 
     @Id
@@ -26,10 +26,8 @@ public class Product {
     private String name;
     private String category;
     @ManyToOne
-    private Location location;
-    @ManyToMany
     @JsonIgnore
-    private List<Cart> carts = new ArrayList<>();
+    private Location location;
 
     public void addLocation(Location location) {
         this.location = location;
@@ -39,14 +37,6 @@ public class Product {
     public void removeLocation() {
         location.removeProduct(this);
         this.location = null;
-    }
-
-    public void addCart(Cart cart) {
-        carts.add(cart);
-    }
-
-    public void removeCart(Cart cart) {
-        carts.remove(cart);
     }
 
 }

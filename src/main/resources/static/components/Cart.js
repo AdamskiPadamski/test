@@ -1,5 +1,4 @@
 var React = require('react');
-var CartActions = require('../actions/CartActions');
 var Link = require('react-router').Link;
 
 var Cart = React.createClass({
@@ -11,11 +10,7 @@ var Cart = React.createClass({
       <div>
         <h1>Basket</h1>
           <ul>
-            {Object.keys(products).map(function(product){
-              return (
-                <li key={products[product].id}>{products[product].name}</li>
-              )
-            })}
+            {this.props.products.map(product => <li key={product.id}>{product.name}</li>)}
           </ul>
           <Link to="/confirmation"><button>Checkout</button></Link>
       </div>

@@ -1,5 +1,6 @@
 package com.sky.product.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Data
 @EqualsAndHashCode(of = "email")
-@ToString(exclude = { "cart", "location" })
+@ToString(exclude = { "location" })
 public class Customer {
 
     @Id
@@ -26,18 +27,11 @@ public class Customer {
     @NotNull
     private String email;
     @NotNull
+    @JsonIgnore
     private String password;
     @ManyToOne
     @NotNull
     private Location location;
-    @OneToOne(cascade = CascadeType.ALL)
-    @NotNull
-    private Cart cart;
-
-    public Customer() {
-        cart = new Cart();
-        cart.addCustomer(this);
-    }
 
     public void addLocation(Location location) {
         this.location = location;

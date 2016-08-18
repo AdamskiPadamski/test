@@ -3,12 +3,26 @@ var ProductConstants = require('../constants/ProductConstants');
 
 var ProductActions = {
 
-  addToProducts: function(products) {
-    AppDispatcher.handleAction({
-      actionType: ProductConstants.RECEIVE_PRODUCTS,
-      products: products
-    })
-  },
+    addToProducts: function(products) {
+        AppDispatcher.handleAction({
+            actionType: ProductConstants.RECEIVE_PRODUCTS,
+            products: products
+        })
+    },
+
+    addProduct: function(product) {
+        AppDispatcher.handleAction({
+            actionType: ProductConstants.ADD_PRODUCT,
+            product: product
+        })
+    },
+
+    removeProduct: function(product) {
+        AppDispatcher.handleAction({
+            actionType: ProductConstants.REMOVE_PRODUCT,
+            product: product
+        })
+    }
 
 };
 

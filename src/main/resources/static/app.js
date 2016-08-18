@@ -1,5 +1,4 @@
 var React = require('react');
-var CartAPI = require('./utils/CartAPI');
 var ProductAPI = require('./utils/ProductAPI');
 var CartApp = require('./components/CartApp');
 var ReactDOM = require('react-dom');

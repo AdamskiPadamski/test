@@ -1,6 +1,7 @@
 var keyMirror = require('keymirror');
 
-// Define action constants
 module.exports = keyMirror({
-  RECEIVE_PRODUCTS: null,       // Adds item to cart
+    RECEIVE_PRODUCTS: null,
+    ADD_PRODUCT: null,
+    REMOVE_PRODUCT:null
 });

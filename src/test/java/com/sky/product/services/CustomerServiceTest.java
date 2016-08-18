@@ -3,6 +3,7 @@ package com.sky.product.services;
 import com.sky.product.domain.Customer;
 import com.sky.product.domain.Location;
 import com.sky.product.domain.Product;
+import com.sky.product.exceptions.CustomerNotFoundException;
 import com.sky.product.repositories.CustomerRepository;
 import com.sky.product.repositories.ProductRepository;
 import org.junit.Before;
@@ -49,13 +50,13 @@ public class CustomerServiceTest {
     }
 
     @Test
-    public void testGetCustomerCatalogue() {
+    public void testSuccessGetCustomerCatalogue() {
         Customer customer = new Customer();
         Product product = new Product();
         List<Product> products = new ArrayList<>();
         products.add(product);
 
-        when(customerRepository.findOne(1L)).thenReturn(Optional.of(customer));
+        when(customerRepository.findOne(any(Long.class))).thenReturn(Optional.of(customer));
         when(productRepository.findByLocationEqualsOrLocationIsNull(any(Location.class))).thenReturn(products);
 
         List<Product> result = customerService.getCustomerCatalogue(1L);
@@ -63,50 +64,33 @@ public class CustomerServiceTest {
         assertTrue(result.size() == 1);
     }
 
-    @Test
-    public void testGetProductsInCart() {
-        Customer customer = new Customer();
-        Product product = new Product();
+    @Test(expected = CustomerNotFoundException.class)
+    public void testFailureGetCustomerCatalogue() {
+        when(customerRepository.findOne(any(Long.class))).thenReturn(Optional.empty());
 
-        customer.getCart().addProduct(product);
-
-        when(customerRepository.findOne(any(Long.class))).thenReturn(Optional.of(customer));
-
-        List<Product> result = customerService.getProductsInCustomerCart(1L);
-
-        assertTrue(result.size() == 1);
+        customerService.getCustomerCatalogue(1L);
     }
 
     @Test
-    public void testAddProductToCart() {
+    public void testSuccessGetCustomerLocation() {
         Customer customer = new Customer();
-        Product product = new Product();
+        Location location = new Location();
+        location.setName("test");
+
+        customer.addLocation(location);
 
         when(customerRepository.findOne(any(Long.class))).thenReturn(Optional.of(customer));
-        when(productRepository.findOne(any(Long.class))).thenReturn(Optional.of(product));
 
-        assertTrue(customer.getCart().getProducts().size() == 0);
+        Location result = customerService.getCustomerLocation(1L);
 
-        customerService.addProductToCustomerCart(1L, 1L);
-
-        assertTrue(customer.getCart().getProducts().size() == 1);
+        assertTrue(location.getName().equals(result.getName()));
     }
 
-    @Test
-    public void testDeleteProductFromCart() {
-        Customer customer = new Customer();
-        Product product = new Product();
+    @Test(expected = CustomerNotFoundException.class)
+    public void testFailureGetCustomerLocation() {
+        when(customerRepository.findOne(any(Long.class))).thenReturn(Optional.empty());
 
-        customer.getCart().addProduct(product);
-
-        when(customerRepository.findOne(any(Long.class))).thenReturn(Optional.of(customer));
-        when(productRepository.findOne(any(Long.class))).thenReturn(Optional.of(product));
-
-        assertTrue(customer.getCart().getProducts().size() == 1);
-
-        customerService.deleteProductFromCustomerCart(1L, 1L);
-
-        assertTrue(customer.getCart().getProducts().size() == 0);
-
+        customerService.getCustomerLocation(1L);
     }
+
 }

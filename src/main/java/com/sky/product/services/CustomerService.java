@@ -1,7 +1,7 @@
 package com.sky.product.services;
 
-import com.sky.product.domain.Cart;
 import com.sky.product.domain.Customer;
+import com.sky.product.domain.Location;
 import com.sky.product.domain.Product;
 import com.sky.product.exceptions.*;
 import com.sky.product.repositories.CustomerRepository;
@@ -36,54 +36,15 @@ public class CustomerService {
     }
 
     /**
-     * Returns the products in the specified customer's basket
+     * Returns the location of a specified customer
      *
-     * @param customerId the id of the customer whose basket's products are to be retrieved
-     * @return list of products in the customer's basket
+     * @param customerId the id of the customer whose location is to be retrieved
+     * @return the location of the specified customer
      */
-    public List<Product> getProductsInCustomerCart(Long customerId) {
+    public Location getCustomerLocation(Long customerId) {
         Customer customer = customerRepository.findOne(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
 
-        return customer.getCart().getProducts();
-    }
-
-    /**
-     * Adds the product with the specified id to the basket of the customer with the specified id
-     *
-     * @param customerId the id of the customer whose basket is to be added to
-     * @param productId the id of the product that is to be added to the basket
-     */
-    public void addProductToCustomerCart(Long customerId, Long productId) {
-        Customer customer = customerRepository.findOne(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
-        Product product = productRepository.findOne(productId).orElseThrow(() -> new ProductNotFoundException(productId));
-
-        if (!customer.getCart().getProducts().contains(product)) {
-            customer.getCart().addProduct(product);
-            customerRepository.save(customer);
-        } else {
-            throw new ProductAlreadyInCartException(customerId, productId);
-        }
-
-    }
-
-    /**
-     * Deletes the product with specified id from the basket of the customer with the specified id
-     *
-     * @param customerId the id of the customer whose basket is to be modified
-     * @param productId the id of the product to add to the basket
-     */
-    public void deleteProductFromCustomerCart(Long customerId, Long productId) {
-        Customer customer = customerRepository.findOne(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
-        Product product = productRepository.findOne(productId).orElseThrow(() -> new ProductNotFoundException(productId));
-
-        Cart cart = customer.getCart();
-        if (cart.getProducts().contains(product)) {
-            cart.removeProduct(product);
-        } else {
-            throw new ProductNotInCartException(customerId, productId);
-        }
-
-        customerRepository.save(customer);
+        return customer.getLocation();
     }
 
 }
