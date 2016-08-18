@@ -1,20 +1,20 @@
 var React = require('react');
 var ProductStore = require('../stores/ProductStore');
 var ProductList = require('./ProductList');
-var Cart = require('./Cart');
+var Basket = require('./Basket');
 var _ = require('underscore');
 
-function getCartState() {
+function getProducts() {
     return {
         products: ProductStore.getProducts()
     };
 }
 
-var CartApp = React.createClass({
+var ProductSelection = React.createClass({
 
     getInitialState: function() {
-        return getCartState();
-      },
+        return getProducts();
+    },
 
     componentDidMount: function() {
         ProductStore.addChangeListener(this._onChange);
@@ -29,21 +29,22 @@ var CartApp = React.createClass({
         var headings = Object.keys(productsByCategory);
 
         return (
-          <div>
-            <div style={{'width': '66%', 'float': 'left'}}>
-                {headings.map(heading => <ProductList key={heading} heading={heading} products={productsByCategory[heading]} />)}
+            <div>
+                <h1>Product Selection</h1>
+                <div style={{'width': '66%', 'float': 'left'}}>
+                    {headings.map(heading => <ProductList key={heading} heading={heading} products={productsByCategory[heading]} />)}
+                </div>
+                <div style={{'width': '33%', 'float': 'left'}}>
+                    <Basket products={this.state.products.filter(product => product.selected === true)} />
+                </div>
             </div>
-            <div style={{'width': '33%', 'float': 'left'}}>
-                <Cart products={this.state.products.filter(product => product.selected === true)} />
-            </div>
-          </div>
         );
     },
 
     _onChange: function() {
-        this.setState(getCartState());
+        this.setState(getProducts());
     }
 
 });
 
-module.exports = CartApp;
+module.exports = ProductSelection;
